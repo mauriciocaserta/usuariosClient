@@ -1,0 +1,12 @@
+{
+    "name": "mauricio/usuariosclient",
+    "description": "Client cadastro de usuarios",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Mauricio Caserta",
+            "email": "mauricio@squadit.com.br"
+        }
+    ],
+    "require": {}
+}

@@ -1,3 +1,7 @@
+client:
+    resource: "@ClientBundle/Resources/config/routing.php"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

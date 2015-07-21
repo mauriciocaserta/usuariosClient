@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>Usuarios</title>
+    </head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/api/css/style.css') }}" />    
+    <body>
+        <!-- nav -->
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">
+                        <span>#SISTEMAPHP</span></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Usuarios Cadastrados</div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tr class="info">
+                        <td>#ID</td>
+                        <td>#Nome</td>
+                    </tr>
+            {% for usuario in retorno %}
+                    <tr>
+                        <td >{{ usuario.id }}</td>
+                        <td >{{ usuario.nome }}</td>
+                    </tr>
+             {% endfor %}
+
+                    <select name="id" id="id" class="select form-control">
+                        {% for usuario in retorno %} 
+                            <option>{{ usuario.id }} ({{ usuario.nome }})</option>  
+                        {% endfor %}
+     
+                    </select>
+                  
+
+                    <button type="button" name="delete" id="delete" class="btnremover btn btn-danger">Remover</button>
+                </table>
+            </div>
+        </div>
+
+    </body>
+    <script>
+        $("#delete").click(function(event) {
+
+            event.preventDefault();
+            $.ajax({
+                url: "/delete",
+                dataType: "json",
+                type: "POST",
+                data: {'id': $('#id').val()
+                },
+                success: function(data) {
+                    // converter retorno para um objeto Json
+                    var rJson = JSON.parse(JSON.stringify(data));
+                    // verificar se o serviço retorna true
+                    if (rJson.retorno == true) {
+                        alert('Removido com Sucesso!');
+                        location.reload();
+                    } else {
+                        alert('Não Removido!');
+                    }
+                },
+                error: function(data) {
+                    alert('Muita Treta Vish!');
+                }
+            });
+
+        });
+    </script>
+</html>

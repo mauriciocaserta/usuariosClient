@@ -10,7 +10,7 @@ class DefaultController extends Controller {
         return $this->render('ClientBundle:Default:index.html.twig', array('name' => $name));
     }
 
-    public function curlAction($link, $data) {
+    private static function curlExec($link, $data) {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $link);
@@ -38,9 +38,31 @@ class DefaultController extends Controller {
                 'senha' => $senha
             );
 
-            $response = $this->curlAction($link, $data);
+            $response = self::curlExec($link, $data);
         }
         return new JsonResponse($response);
     }
-    
+
+    public function deleteAction() {
+        $request = $this->getRequest();
+
+        $id = $request->get('id');
+
+        $data = array(
+            'id' => $id
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://app.server/delete');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+        $response = curl_exec($ch);
+
+        $response = json_decode($response);
+
+        return new JsonResponse($response);
+    }
+
 }

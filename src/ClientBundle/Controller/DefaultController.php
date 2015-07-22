@@ -4,6 +4,7 @@ namespace ClientBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller {
 
@@ -22,8 +23,6 @@ class DefaultController extends Controller {
 
         $response = curl_exec($ch);
 
-        print_r($response);
-        die();
         return $response;
     }
 
@@ -67,6 +66,24 @@ class DefaultController extends Controller {
         $response = json_decode($response);
 
         return new JsonResponse($response);
+    }
+    
+    public function usuariosAction(){
+        
+        $session = $this->getRequest()->getSession();
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://app.server/usuarios');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+
+        $response = curl_exec($ch);
+
+        if ($session->has('usuario') == null) {
+            return new RedirectResponse($this->generateUrl('client_login'));
+        } else {
+            return $this->render('ClientBundle:Default:usuarios.html.twig', array('retorno' => json_decode($response)));
+        }
     }
 
 }

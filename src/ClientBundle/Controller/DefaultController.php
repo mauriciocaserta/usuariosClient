@@ -3,11 +3,13 @@
 namespace ClientBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller {
 
-    public function indexAction($name) {
-        return $this->render('ClientBundle:Default:index.html.twig', array('name' => $name));
+    public function indexAction() {
+        $mensagem = "";
+        return $this->render('ClientBundle:Default:index.html.twig', array('mensagem'=>$mensagem));
     }
 
     private static function curlExec($link, $data) {
@@ -20,6 +22,8 @@ class DefaultController extends Controller {
 
         $response = curl_exec($ch);
 
+        print_r($response);
+        die();
         return $response;
     }
 
@@ -30,14 +34,14 @@ class DefaultController extends Controller {
         $nome = $request->request->get("nome");
         $senha = $request->request->get("senha");
 
-        if (!empty($nome) && !empty($senha)) {
+      if (!empty($nome) && !empty($senha)) {
             $link = 'http://app.server/cadastro';
 
             $data = array(
                 'nome' => $nome,
                 'senha' => $senha
             );
-
+            $retorno = true;
             $response = self::curlExec($link, $data);
         }
         return new JsonResponse($response);

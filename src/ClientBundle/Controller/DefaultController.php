@@ -9,8 +9,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class DefaultController extends Controller {
 
     public function indexAction() {
-        $mensagem = "";
-        return $this->render('ClientBundle:Default:index.html.twig', array('mensagem'=>$mensagem));
+        $session = $this->getRequest()->getSession();
+
+        if ($session->has('usuario') == null) {
+            return new RedirectResponse($this->generateUrl('client_login'));
+        } else {
+            return $this->render('ClientBundle:Default:index.html.twig', array('session' => $session));
+        }
     }
 
     private static function curlExec($link, $data) {
@@ -33,7 +38,7 @@ class DefaultController extends Controller {
         $nome = $request->request->get("nome");
         $senha = $request->request->get("senha");
 
-      if (!empty($nome) && !empty($senha)) {
+        if (!empty($nome) && !empty($senha)) {
             $link = 'http://app.server/cadastro';
 
             $data = array(
@@ -67,9 +72,9 @@ class DefaultController extends Controller {
 
         return new JsonResponse($response);
     }
-    
-    public function usuariosAction(){
-        
+
+    public function usuariosAction() {
+
         $session = $this->getRequest()->getSession();
 
         $ch = curl_init();
@@ -84,6 +89,51 @@ class DefaultController extends Controller {
         } else {
             return $this->render('ClientBundle:Default:usuarios.html.twig', array('retorno' => json_decode($response)));
         }
+    }
+
+    public function loginAction() {
+        return $this->render('ClientBundle:Default:login.html.twig', array('mensagem' => ''));
+    }
+
+    public function loginExecAction() {
+        $session = $this->getRequest()->getSession();
+
+        $request = $this->getRequest();
+
+        $nome = $request->request->get('nome');
+        $senha = $request->request->get('senha');
+
+        if (!empty($nome) && !empty($senha)) {
+
+            $data = array(
+                'nome' => $nome,
+                'senha' => $senha
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'http://app.server/login');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+            $return = curl_exec($ch);
+
+            $response = json_decode($return);
+
+            if (!is_null($response) && $response->erro == false) {
+                $session->set('usuario', $response->retorno);
+            } else {
+                $session->set('usuario', null);
+            }
+        } else {
+            
+        }
+        return new JsonResponse($response);
+    }
+
+    public function sairAction() {
+        $session = $this->getRequest()->getSession();
+        $session->invalidate();
     }
 
 }

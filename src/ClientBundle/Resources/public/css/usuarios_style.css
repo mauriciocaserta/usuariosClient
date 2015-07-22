@@ -1,0 +1,18 @@
+ body{
+    background-image: url('http://www.morioneswallpaper.com/static/images/black-hd-background-background-wallpapers-abstract-photo-cool-black-background_E0m6v1f.jpg') ;
+    background-repeat:no-repeat;
+    background-size:cover;
+ }
+ 
+ .panel{
+     width:40%;
+     margin: 0 auto;
+     display:block;
+ }
+ 
+ .select{
+     width:50%;
+     display:inline;
+     margin-right:1%;
+     margin-bottom:1%;
+ }

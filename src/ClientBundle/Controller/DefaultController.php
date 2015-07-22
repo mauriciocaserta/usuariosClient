@@ -46,6 +46,7 @@ class DefaultController extends Controller {
                 'senha' => $senha
             );
             $retorno = true;
+
             $response = self::curlExec($link, $data);
         }
         return new JsonResponse($response);
@@ -110,15 +111,10 @@ class DefaultController extends Controller {
                 'senha' => $senha
             );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'http://app.server/login');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            $link = 'http://app.server/login';
+            $response = self::curlExec($link, $data);
 
-            $return = curl_exec($ch);
-
-            $response = json_decode($return);
+            $response = json_decode($response);
 
             if (!is_null($response) && $response->erro == false) {
                 $session->set('usuario', $response->retorno);

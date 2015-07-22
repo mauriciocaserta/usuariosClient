@@ -7,9 +7,10 @@
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/api/css/style.css') }}" />
+       {% stylesheets 'bundles/client/css/index_style.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
 
-        
     <div></div>
 
     </head>
@@ -40,7 +41,7 @@
             </div>
 
             <!-- div cadastro -->
-            <div class="panel panel-default">
+            <div class="panel panelcadastro panel-default">
                 <div class="panel-heading">#cadastro</div>
                 <div class="panel-body">
                     <form id="form1" method="POST">

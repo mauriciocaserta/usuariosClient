@@ -1,0 +1,25 @@
+body{
+    background-image: url('http://www.morioneswallpaper.com/static/images/Background-Texture-281_MeZGyt5.jpg') ;
+    background-repeat:no-repeat;
+    background-size:cover;
+
+}
+.panelcadastro{
+    width:40%;
+    margin:0 auto;
+}
+
+.panel-body{
+    padding-left:10%;
+}
+
+.text{
+    width:90%;
+    margin: 0 auto;
+}
+
+.btn{
+    width:30%;
+    margin: 0 auto;
+    margin-left:10%;
+}

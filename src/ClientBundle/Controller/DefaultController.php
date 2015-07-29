@@ -45,8 +45,7 @@ class DefaultController extends Controller {
                 'nome' => $nome,
                 'senha' => $senha
             );
-            $retorno = true;
-
+            
             $response = self::curlExec($link, $data);
         }
         return new JsonResponse($response);
